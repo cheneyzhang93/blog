@@ -14,12 +14,12 @@ timezone:
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Cheney # the main title
+title: 滴滴外包的博客 # the main title
 
-tagline: Cheney Blog # it will display as the sub-title
+tagline: 滴滴外包的博客 # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  blog.
+  滴滴外包，记录工作和生活
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -38,8 +38,8 @@ social:
   email: 13155192291@163.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://x.com/yuchenzhan81879 # change to your twitter homepage
-    - https://github.com/cheneyzhang93 # change to your github homepage
+    # - https://x.com/yuchenzhan81879 # change to your twitter homepage
+    # - https://github.com/cheneyzhang93 # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
