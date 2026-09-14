@@ -7,5 +7,6 @@ source "https://rubygems.org"
 gem "jekyll-theme-chirpy", "= 7.0.1"
 
 group :test do
-  gem "html-proofer", "~> 5.0"
+  # 固定版本：避免与主题同名时代工具链的 CLI 行为漂移
+  gem "html-proofer", "= 5.0.9"
 end

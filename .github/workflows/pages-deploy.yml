@@ -52,9 +52,15 @@ jobs:
 
       - name: Test site
         run: |
-          bundle exec htmlproofer _site \
+          v=$(bundle list 2>/dev/null | grep -o 'html-proofer ([0-9.]*)' | head -1)
+          out=$(bundle exec htmlproofer _site \
             \-\-disable-external \
-            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/" 2>&1) && code=0 || code=$?
+          echo "$out"
+          if [ $code -ne 0 ]; then
+            echo "::error::[$v] $(printf '%s' "$out" | tr '\n' '|' | tail -c 5500)"
+            exit $code
+          fi
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
