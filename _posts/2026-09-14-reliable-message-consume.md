@@ -4,6 +4,7 @@ date: 2026-09-14
 categories: [后端架构]
 tags: [Java, Spring Boot, 消息消费, 幂等设计, 分布式锁, 状态机]
 description: 以「收件箱模式」改造三方推送消息链路：落库即应答、单消费者串行，用四态状态机、三层防重与退避重试，消解超时重推引发的重复数据问题。
+hide_dates: true
 mermaid: true
 ---
 
