@@ -3,8 +3,10 @@
 - type: github
   icon: "fab fa-github"
 
-- type: twitter
-  icon: "fa-brands fa-x-twitter"
+# twitter 已停用（_config.yml 中 twitter.username 已清空）：注释以隐藏图标，
+# 避免渲染出指向 https://twitter.com/ 的空用户名链接；恢复时取消注释并补全 username 即可
+# - type: twitter
+#   icon: "fa-brands fa-x-twitter"
 
 - type: email
   icon: "fas fa-envelope"
