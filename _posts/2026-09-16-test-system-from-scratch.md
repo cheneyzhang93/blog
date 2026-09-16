@@ -1,6 +1,6 @@
 ---
 title: 从零建立测试体系：分层、基座、断言与回归纪律
-date: 2026-09-16
+date: 2026-09-16 10:00:00 +0800
 categories: [稳定性治理]
 tags: [Java, Spring Boot, 单元测试, 集成测试, 测试治理, 日志断言]
 description: 测试的起点是零：没有单元测试、没有集成基座，仅有的自动化测试直连真实测试库——环境不可控、离线跑不了、CI 接不进来。本文复盘从零建立测试体系：单元测试锁住逻辑、集成测试守住接缝，缺陷在合入前拦下；并给出可直接套用的模板（单测 / 基座 / 日志断言 / 报告配置 / 排查表），以及三笔学费（9000+ 条残留数据、717 条 null 单号、CI 假绿）换来的教训。
@@ -86,6 +86,11 @@ flowchart TD
 | E2E（17） | 完整启动 | 内存库 | `@MockBean` 隔离 | 秒级 |
 
 分层买的是"性价比"：单元层买全分支覆盖，集成层买真实 SQL 与 HTTP 链路的验证，端到端买业务闭环——每层只买自己最擅长的那部分。
+
+```mermaid
+flowchart TD
+    A["纯单测 168 · 毫秒级<br/>买全分支覆盖"] --> B["容器集成 38 · 秒级<br/>买真实 SQL 与 HTTP 链路"] --> C["E2E 17 · 秒级<br/>买业务闭环"]
+```
 
 ## 二、纯单测怎么写（完整模板）
 
@@ -372,6 +377,13 @@ class OrderCreateFlowTest extends BaseIntegrationTest {
 | `close()` | 停止并移除（`try-with-resources` 自动调用） |
 
 完整示例——三段式：attach → 发请求 → 断言：
+
+```mermaid
+flowchart LR
+    A["① attach()<br/>（try-with-resources）"] --> B["② 发请求"] --> C{"③ 双向断言"}
+    C -->|"正向"| D["anyMatch：该打的日志打了"]
+    C -->|"反向"| E["anyAtLevel + assertFalse：<br/>不该有的级别没有"]
+```
 
 ```java
 @Test

@@ -69,6 +69,16 @@ mermaid: true
 
 这本质上是把数据库引擎的预写日志（WAL）思想搬到应用层：**先写日志、再改数据**；只不过这里写的是逐批的撤销镜像，落在文件系统上，数据库自身的日志机制仍照常工作。
 
+三步的顺序契约：
+
+```mermaid
+flowchart LR
+    A["① undo 原子写入<br/>（写一次不覆盖）"] -->|"严格先于"| B["② 单批事务提交"]
+    B -->|"提交成功后"| C["③ done 标记"]
+    A -.->|"此处崩溃：整批回滚，undo 与现状一致（无害）"| B
+    B -.->|"此处崩溃：无 done → 重跑该批，幂等自愈"| C
+```
+
 与之对称的第二条契约：**done 标记只在事务提交成功之后写**。于是崩溃恢复的判定变得极简：
 
 - 有 done 标记 ⇒ 该批已完成（事务提交已发生过）；
@@ -98,6 +108,21 @@ flowchart TD
 **执行**按批推进，每批一个短事务；批间可暂停、可限速、可续跑。
 
 **回滚**按批恢复改前镜像，带防覆盖校验；恢复成功后移除 done 标记——被回滚的批成为「缺口批」，重新执行即可处理，形成闭环。
+
+任务状态机（`state.json` 的迁移全貌）：
+
+```mermaid
+stateDiagram-v2
+    [*] --> PRECHECKED: 预检完成（快照 + 批号）
+    PRECHECKED --> RUNNING: execute 按批推进
+    RUNNING --> PAUSED: pause（批间暂停）
+    PAUSED --> RUNNING: 续跑（从缺口批）
+    RUNNING --> RUNNING: 崩溃重启 → 账本自检续跑
+    RUNNING --> FINISHED: 全部批完成 + 收尾对账
+    RUNNING --> ROLLEDBACK: rollback（按批恢复）
+    FINISHED --> ROLLEDBACK: 事后发现异常，按批回滚
+    ROLLEDBACK --> RUNNING: 缺口批重新执行
+```
 
 任务目录（账本结构）：
 
