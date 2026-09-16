@@ -1,6 +1,13 @@
 ---
 ---
 
+/* 主题变量默认值（_sass/addon/variables.scss）用 !default 声明，此处先定义即可覆盖 */
+/* 补全中文字体回退链：Windows 的雅黑之外，覆盖 macOS / HarmonyOS / Android 与 Linux */
+$font-family-base: 'Source Sans Pro', 'PingFang SC', 'HarmonyOS Sans SC', 'Noto Sans SC',
+  'Microsoft YaHei', sans-serif;
+$font-family-heading: Lato, 'PingFang SC', 'HarmonyOS Sans SC', 'Noto Sans SC', 'Microsoft YaHei',
+  sans-serif;
+
 @import 'main
 {%- if jekyll.environment == 'production' -%}
   .bundle
@@ -74,4 +81,46 @@
       -webkit-line-clamp: 2;
     }
   }
+}
+
+/* 表格：收起内边距与字号，并让单元格换行，减少横向溢出 */
+.content .table-wrapper > table {
+  thead th,
+  tbody td {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.875rem;
+    white-space: normal;
+  }
+}
+
+/* 窄屏：保住列宽下限，宁可整表横滑，也不让列被压缩成逐字折行 */
+@media all and (max-width: 849px) {
+  .content .table-wrapper > table {
+    min-width: 34rem;
+  }
+}
+
+/* 表格仍宽于正文时的可横滑提示：左右边缘的渐隐遮罩随滚动状态自动显隐 */
+.table-wrapper {
+  /* 中性灰在明暗两种主题下都可见，避开主题四象限配色矩阵 */
+  background:
+    linear-gradient(to right, var(--main-bg) 30%, transparent) left center,
+    linear-gradient(to left, var(--main-bg) 30%, transparent) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(128, 128, 128, 0.28), transparent) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(128, 128, 128, 0.28), transparent) right center;
+  background-repeat: no-repeat;
+  background-size:
+    40px 100%,
+    40px 100%,
+    16px 100%,
+    16px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+/* 目录：长标题最多展示两行，替代单行省略号截断 */
+#toc-wrapper ul .toc-link {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
