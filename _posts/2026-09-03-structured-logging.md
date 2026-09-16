@@ -1,6 +1,6 @@
 ---
 title: 日志治理：统一异常出口、结构化日志与字段契约
-date: 2026-09-16 21:00:00 +0800
+date: 2026-09-03
 categories: [稳定性治理]
 tags: [Java, Spring Boot, 结构化日志, log4j2, 统一异常出口, 脱敏]
 description: 异常出口被 9 个接口的 try-catch 绕过、根因堆栈丢在四处、日志是无法检索的纯文本、请求操作不可追溯——日志治理的起点是四笔债。本文复盘日志体系的 0→1 设计：统一异常出口的接管与还原、四处吞堆栈点的逐点治理与级别纪律、JSON 布局与双层异步的每个参数、访问日志的字段建模、13 字段契约与一次日志栈供应链审计。
@@ -80,7 +80,7 @@ public class ObservabilityExceptionAdvice {
 | 1 | 业务服务（收款回调链路） | `log.info("e {}", e)` 只打 toString；再 `throw new ServiceException(e.getMessage())` 二次包装——**根因堆栈在包装时彻底丢失** | 双 catch 分级：业务预期异常 → WARN；系统异常 → ERROR 结构化（完整根因堆栈 + 脱敏） |
 | 2 | 消息消费 | `log.error("...: " + e.getMessage())`——有错误消息、没有堆栈 | 结构化定位：msgId / topic / tag + 完整堆栈 |
 | 3 | 缓存组件 | `e.printStackTrace()` × 6——System.err 直出，无级别、无结构、采集器收不到 | 统一改 `log.error` 结构化输出 |
-| 4 | 异步兜底处理器 | `logger.warn(方法名 + params 数组)`——params 无业务信息 | 结构化 ERROR：trace_id + 类.方法 + 参数摘要（≤200）+ 完整堆栈 |
+| 4 | 异步兜底处理器 | `logger.warn(方法名 + params 数组)`——params 无业务信息 | 结构化 ERROR：trace_id + 类名与方法名 + 参数摘要（≤200）+ 完整堆栈 |
 
 四处之外，还有一条贯穿性的**级别纪律**——它决定的不只是日志观感，而是告警的有效性：
 

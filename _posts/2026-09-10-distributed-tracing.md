@@ -1,6 +1,6 @@
 ---
 title: 链路追踪治理：W3C 标准落地、上下文传播与 Agent 取舍
-date: 2026-09-16 22:00:00 +0800
+date: 2026-09-10
 categories: [稳定性治理]
 tags: [Java, Spring Boot, 链路追踪, W3C Trace Context, OpenTelemetry, MDC]
 description: 目标格式进不了标准传播头、生成器同毫秒撞号、异步与消息链路整段断链——链路追踪的起点是三笔债。本文复盘它的 0→1 标准化：32 位 hex 身份的生成与采纳、四类执行体的上下文传播（线程池装饰器、消息双实现、调度注入）、OTel Java Agent 的完整引入评估、span 导出与按 trace_id 检索端点的设计——每个决策都附实测依据。

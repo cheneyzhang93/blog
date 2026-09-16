@@ -1,0 +1,11 @@
+# 友情链接：新增一条记录，即会在「友情链接」页渲染一张卡片
+# 字段说明
+#   name   站点名
+#   link   站点地址
+#   avatar 头像图片直链（推荐正方形，本地图可放 assets/images/ 后填相对路径）
+#   desc   一句话简介
+
+- name: 炊烟小站
+  link: https://docs.yychuiyan.com/
+  avatar: https://docs.yychuiyan.com/images/avatar.webp
+  desc: 一隅之地，记录技术与成长。

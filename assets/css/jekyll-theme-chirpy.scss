@@ -1,0 +1,77 @@
+---
+---
+
+@import 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* 友情链接页（_tabs/friends.md）样式 */
+.friend-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+
+  .friend-item {
+    display: flex;
+    align-items: center;
+    column-gap: 0.875rem;
+    padding: 0.875rem 1rem;
+    border-radius: $base-radius;
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .friend-avatar {
+    flex-shrink: 0;
+
+    /* 主题会为页面内图片补上 .img-link / .shimmer，这里收圆并去掉行内基线空隙 */
+    .img-link {
+      display: block;
+      line-height: 0;
+      border-radius: 50%;
+    }
+
+    img {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: var(--sidebar-bg);
+    }
+  }
+
+  .friend-intro {
+    min-width: 0;
+
+    .friend-name {
+      display: block;
+      font-weight: 600;
+      color: var(--heading-color);
+      text-decoration-line: none;
+
+      &:hover {
+        color: var(--link-color);
+      }
+    }
+
+    .friend-desc {
+      margin: 0.25rem 0 0;
+      font-size: 0.85rem;
+      color: var(--text-muted-color);
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+  }
+}

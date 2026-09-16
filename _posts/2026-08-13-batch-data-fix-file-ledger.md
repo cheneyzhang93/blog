@@ -1,6 +1,6 @@
 ---
 title: 批量数据修复：文件账本驱动的可回滚设计
-date: 2026-09-15
+date: 2026-08-13
 categories: [后端架构]
 tags: [Java, Spring Boot, 数据修复, 批量处理, 幂等设计, 回滚设计]
 description: 12 万行清单、四张业务表、约 48 万行实际改动：要求可灰度、可回滚、可降级，且不新增任何数据库表。以本地文件账本与顺序契约，把一次性的批量数据修复做成可回滚、可续跑、可审计的工程任务。
@@ -69,6 +69,21 @@ mermaid: true
 
 这本质上是把数据库引擎的预写日志（WAL）思想搬到应用层：**先写日志、再改数据**；只不过这里写的是逐批的撤销镜像，落在文件系统上，数据库自身的日志机制仍照常工作。
 
+三件套落在同一个方法里，语句顺序就是契约本身：
+
+```java
+void writeUndoOnce(String jobId, int batchNo, List<Row> needs) {
+    Path target = undoPath(jobId, batchNo);                          // undo/{批号}.jsonl
+    if (Files.exists(target)) return;                                // 写一次不覆盖：保住最初镜像
+    Path tmp = target.resolveSibling(target.getFileName() + ".tmp");
+    try (FileChannel ch = FileChannel.open(tmp, CREATE, TRUNCATE_EXISTING, WRITE)) {
+        ch.write(ByteBuffer.wrap(toJsonl(needs)));                   // 被改列的改前镜像（含 NULL）
+        ch.force(true);                                              // fsync：undo 先于事务提交落盘
+    }
+    Files.move(tmp, target, ATOMIC_MOVE);                            // rename：同文件系统原子替换
+}
+```
+
 三步的顺序契约：
 
 ```mermaid
@@ -135,6 +150,13 @@ stateDiagram-v2
 | `failed.csv` / `conflict.csv` | 问题行隔离 / 回滚冲突 | 事后重放 / 人工处理 |
 | `updated_codes.csv` | 更新商品编号清单 | 收尾时由快照 + 标记重建 |
 | `state.json` | 任务状态与参数 | PRECHECKED / RUNNING / PAUSED / FINISHED / ROLLEDBACK… |
+
+`undo/{批号}.jsonl` 一行就是一条数据的改前镜像——只记被改列，NULL 显式落盘（恢复靠显式列 `SET`，NULL 才能还原）：
+
+```json
+{"id": 880123, "before": {"state": "open", "qty_total": 5, "qty_available": 2, "qty_locked": 3}}
+{"id": 880124, "before": {"state": "open", "qty_total": 0, "qty_available": null, "qty_locked": null}}
+```
 
 对外只是一组任务接口：`precheck`（预检）、`execute`（按批区间执行，带限速与容错开关）、`pause / progress`（批间暂停与进度观测）、`report`（导出清单）、`retryFailed`（失败行重放）、`rollback`（按批区间恢复）。同一任务同时只允许一个执行器——以状态文件校验，天然防并发。
 

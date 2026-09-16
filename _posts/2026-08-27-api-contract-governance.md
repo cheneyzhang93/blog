@@ -1,6 +1,6 @@
 ---
 title: API 契约治理：OpenAPI 3 落地、契约守护与生效边界
-date: 2026-09-16 12:00:00 +0800
+date: 2026-08-27
 categories: [稳定性治理]
 tags: [Java, Spring Boot, OpenAPI, 接口契约, 契约测试, API文档]
 description: 9 个接口注释近乎为零，前端联调靠读源码猜字段；文档生成器自 2020 年起再无新版本；生产接口文档对外开放。本文复盘一次 API 契约治理的完整落地：格式与生成器的两层选型对比、双栈共存的绞杀者策略、快照门禁与契约断言——以及一份如实标注的生效边界。
@@ -130,6 +130,18 @@ flowchart LR
 | ④ UI 路径让出 | UI 固定为 `/openapi3/swagger-ui` | 两个栈都会注册 `/swagger-ui/**` 静态资源——同路径后注册者覆盖先注册者，实测发现旧栈 UI 被顶掉；自定义路径后 `/swagger-ui` 归还旧栈，并新增一条 UI 路径守卫用例防回归 |
 
 决策 ④ 是**实测暴露**的：自查时发现旧文档 UI 突然变成了新栈的界面，才意识到静态资源路径撞车。两套栈共存的世界里，“不越界”不能靠约定——每个共享路径都得显式让开，并配上守卫用例。
+
+决策 ②③④ 收在同一份配置里——每一项都对应一次踩坑：
+
+```yaml
+springdoc:
+  packages-to-scan: com.example.module     # ② 只扫本模块包
+  paths-to-match: /module/**               # ② 路径再限定，挡住同包另一模块的接口
+  api-docs:
+    path: /openapi3/api-docs               # ③ 让出被旧栈占用的默认端点
+  swagger-ui:
+    path: /openapi3/swagger-ui             # ④ 让出 /swagger-ui 静态资源
+```
 
 ## 七、契约如何被“守住”
 
