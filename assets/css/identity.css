@@ -1,0 +1,133 @@
+/* ==========================================================================
+   视觉身份覆盖层（Identity Layer）
+   加载机制：_data/origin/cors.yml 的 webfonts 槽位（主题 basic.yml 同款用法），
+   位置在主题主样式之后，同名覆盖以本文件为准。
+   ========================================================================== */
+
+/* --- 1. 自托管 Inter（拉丁字母/数字/符号；中文走系统字体链） --- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/inter/inter-latin-wght-normal.woff2') format('woff2');
+}
+
+/* --- 2. C2 工程蓝 + T2 标题配色（镜像主题四象限：系统偏好 × 手动切换） --- */
+@media (prefers-color-scheme: light) {
+  html:not([data-mode]),
+  html[data-mode='light'] {
+    --link-color: #2563eb;
+    --link-underline-color: rgba(37, 99, 235, 0.4);
+    --toc-highlight: #1d4ed8;
+    --checkbox-checked-color: #2563eb;
+    --btn-share-hover-color: #2563eb;
+    --tag-border: rgba(37, 99, 235, 0.35);
+    --tag-hover: rgba(37, 99, 235, 0.12);
+    --id-link-hover: #1d4ed8;
+    --id-title-main: #202124;
+    --id-title-sub: #6b7280;
+  }
+
+  html[data-mode='dark'] {
+    --link-color: #93c5fd;
+    --link-underline-color: rgba(147, 197, 253, 0.4);
+    --toc-highlight: #93c5fd;
+    --checkbox-checked-color: #93c5fd;
+    --btn-share-hover-color: #93c5fd;
+    --tag-border: rgba(147, 197, 253, 0.35);
+    --tag-hover: rgba(147, 197, 253, 0.14);
+    --id-link-hover: #bfdbfe;
+    --id-title-main: #e8eaed;
+    --id-title-sub: #8a8f96;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-mode]),
+  html[data-mode='dark'] {
+    --link-color: #93c5fd;
+    --link-underline-color: rgba(147, 197, 253, 0.4);
+    --toc-highlight: #93c5fd;
+    --checkbox-checked-color: #93c5fd;
+    --btn-share-hover-color: #93c5fd;
+    --tag-border: rgba(147, 197, 253, 0.35);
+    --tag-hover: rgba(147, 197, 253, 0.14);
+    --id-link-hover: #bfdbfe;
+    --id-title-main: #e8eaed;
+    --id-title-sub: #8a8f96;
+  }
+
+  html[data-mode='light'] {
+    --link-color: #2563eb;
+    --link-underline-color: rgba(37, 99, 235, 0.4);
+    --toc-highlight: #1d4ed8;
+    --checkbox-checked-color: #2563eb;
+    --btn-share-hover-color: #2563eb;
+    --tag-border: rgba(37, 99, 235, 0.35);
+    --tag-hover: rgba(37, 99, 235, 0.12);
+    --id-link-hover: #1d4ed8;
+    --id-title-main: #202124;
+    --id-title-sub: #6b7280;
+  }
+}
+
+/* --- 3. 干掉主题硬编码的橙色 hover（%link-hover 编译产物，10 组选择器） --- */
+footer a:hover,
+#topbar #breadcrumb a:hover,
+#page-category a:hover,
+#page-tag a:hover,
+#access-lastmod a:hover,
+.post-tail-wrapper .license-wrapper > a:hover,
+.post-tags .post-tag:hover,
+.post-meta a:not([class]):hover,
+.content a:not(.img-link):hover,
+#search-results a:hover {
+  color: var(--id-link-hover) !important;
+  border-bottom-color: var(--id-link-hover);
+}
+
+/* --- 4. 侧栏标题 T2：大字名 + 小字行 --- */
+.site-title {
+  font-weight: 400;
+}
+
+.site-title-main {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--id-title-main);
+}
+
+.site-title-sub {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  line-height: 1.4;
+  color: var(--id-title-sub);
+}
+
+.site-title a:hover .site-title-main {
+  color: var(--sidebar-active-color);
+}
+
+/* --- 5. Inter 字体栈落地（变量钩子实测不可用，见本段说明） ---
+   原计划经 _sass/variables-hook.scss 注入字体栈，但 Sass 的 @import 先按相对路径解析：
+   主题 _sass/main.scss 与该主题自带的同名占位文件同目录，站点版本永远轮不到（dev 与
+   生产 main.bundle 路径皆然）。故字体栈改在此层落地——本文件加载于主题主样式之后，
+   与主题规则同特异度即可级联胜出；选择器与主题 %heading 编译产物一一对应。 */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+header .post-desc,
+#search-results a {
+  font-family: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Noto Sans SC', 'Microsoft YaHei',
+    sans-serif;
+}

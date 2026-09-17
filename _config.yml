@@ -14,7 +14,7 @@ timezone:
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Cheney 的技术博客 # the main title
+title: Cheney 技术博客 # the main title
 
 tagline: 后端架构 · 稳定性治理 # it will display as the sub-title
 
