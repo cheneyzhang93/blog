@@ -1,9 +1,0 @@
-/*
-  主题变量钩子：main.scss 在 addon/variables 之后 import 此文件，
-  站点版优先于主题内同名空文件，用于覆盖 $font-family-*。
-  拉丁字母/数字用自托管 Inter（assets/fonts/inter/），中文回退系统字体链。
-*/
-$font-family-base: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Noto Sans SC', 'Microsoft YaHei',
-  sans-serif;
-$font-family-heading: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Noto Sans SC', 'Microsoft YaHei',
-  sans-serif;

@@ -7,6 +7,7 @@ resource_hints:
       - rel: dns-prefetch
 
 # Web Fonts：指向站内身份层样式（Inter @font-face + 全站视觉覆盖），替代 Google Fonts
+# 注意：身份层挂接在此槽位——assets.self_host.enabled 必须保持关闭（开启后会改读 basic.yml，本覆盖将失效）
 webfonts: /assets/css/identity.css
 
 # Libraries

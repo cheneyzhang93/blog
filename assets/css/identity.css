@@ -88,7 +88,7 @@ footer a:hover,
 }
 
 /* --- 4. 侧栏标题 T2：大字名 + 小字行 --- */
-.site-title {
+#sidebar .site-title {
   font-weight: 400;
 }
 
@@ -119,7 +119,9 @@ footer a:hover,
    原计划经 _sass/variables-hook.scss 注入字体栈，但 Sass 的 @import 先按相对路径解析：
    主题 _sass/main.scss 与该主题自带的同名占位文件同目录，站点版本永远轮不到（dev 与
    生产 main.bundle 路径皆然）。故字体栈改在此层落地——本文件加载于主题主样式之后，
-   与主题规则同特异度即可级联胜出；选择器与主题 %heading 编译产物一一对应。 */
+   与主题规则同特异度即可级联胜出；选择器与主题 %heading 编译产物一一对应。
+   主题在 .pagination / #notification .toast-body / #archives .date.day / #topbar-title
+   处硬编码字体，这里统一归入 Inter 栈（inherit）。 */
 body,
 h1,
 h2,
@@ -130,4 +132,11 @@ header .post-desc,
 #search-results a {
   font-family: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Noto Sans SC', 'Microsoft YaHei',
     sans-serif;
+}
+
+.pagination,
+#notification .toast-body,
+#archives .date.day,
+#topbar-title {
+  font-family: inherit;
 }
