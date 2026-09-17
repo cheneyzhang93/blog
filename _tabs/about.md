@@ -3,6 +3,10 @@
 title: 关于
 icon: fas fa-info-circle
 order: 4
+seo:
+  type: ProfilePage
+  links:
+    - https://github.com/cheneyzhang93
 ---
 
 我是 Cheney，后端工程师。这里记录系统的从 0 到 1：怎么设计、为什么这样取舍、实测结果如何、边界在哪里。

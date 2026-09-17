@@ -1,0 +1,17 @@
+{%- assign github_url = "https://github.com/cheneyzhang93" -%}
+<link rel="me" href="{{ github_url }}">
+
+{%- unless page.layout == 'post' %}
+  {%- assign person_url = '/about/' | absolute_url %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "{{ person_url }}#person",
+      "name": "{{ site.author.name }}",
+      "url": "{{ person_url }}",
+      "image": "{{ site.avatar | absolute_url }}",
+      "sameAs": ["{{ github_url }}"]
+    }
+  </script>
+{%- endunless %}

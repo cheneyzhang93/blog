@@ -23,7 +23,9 @@ description: >- # used by seo meta and the atom feed
   批量数据修复、测试体系、API 契约治理与可观测性（日志 / 链路 / 告警）的设计决策与实测复盘。
 
 # The site author, used by jekyll-seo-tag (`author` meta & JSON-LD).
-author: Cheney
+author:
+  name: Cheney
+  url: "https://cheneyzhang93.github.io/blog/about/"
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -38,12 +40,8 @@ social:
   name: Cheney
   email: 13155192291@163.com # change to your email address
   links:
-    # The first element serves as the copyright owner's link
-    # - https://x.com/yuchenzhan81879 # change to your twitter homepage
-    # - https://github.com/cheneyzhang93 # change to your github homepage
-    # Uncomment below to add more social links
-    # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/username
+    # The first element serves as the copyright owner's link（署名/页脚指向关于页）
+    - https://cheneyzhang93.github.io/blog/about/
 
 # Site Verification Settings
 webmaster_verifications:
