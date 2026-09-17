@@ -2,6 +2,7 @@
 title: API 契约治理：OpenAPI 3 落地、契约守护与生效边界
 date: 2026-08-27
 categories: [稳定性治理]
+series: 稳定性治理
 tags: [Java, Spring Boot, OpenAPI, 接口契约, 契约测试, API 文档]
 description: 9 个接口注释近乎为零，前端联调靠读源码猜字段；文档生成器自 2020 年起再无新版本；生产接口文档对外开放。本文复盘一次 API 契约治理的完整落地：格式与生成器的两层选型对比、双栈共存的绞杀者策略、快照门禁与契约断言——以及一份如实标注的生效边界。
 mermaid: true
