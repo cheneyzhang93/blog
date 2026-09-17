@@ -58,7 +58,7 @@
 | `--tag-hover` | `rgba(37,99,235,.12)` | `rgba(147,197,253,.14)` | 标签 chip hover 底 |
 | 自定义 `--id-link-hover` | `#1d4ed8` | `#bfdbfe` | 悬停文字色 |
 
-**干掉主题硬编码橙 `#d2603a`**（`%link-hover` 编译产物，8 组选择器）：页脚、面包屑、分类/标签页、最近更新、文章许可、文内标签、文内 Meta 链接、正文链接、搜索结果——统一 `color: var(--id-link-hover) !important` + `border-bottom-color` 同步。
+**干掉主题硬编码橙 `#d2603a`**（`%link-hover` 编译产物，10 组选择器）：页脚、面包屑、分类/标签页、最近更新、文章许可、文内标签、文内 Meta 链接、正文链接、搜索结果——统一 `color: var(--id-link-hover) !important` + `border-bottom-color` 同步。
 
 ### 2.4 中文字体策略 — 自托管 Inter + 系统中文链
 
