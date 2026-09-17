@@ -1,0 +1,27 @@
+{% if page.series %}
+  {% assign series_posts = site.posts | where: "series", page.series | sort: "date" %}
+  {% assign series_total = series_posts | size %}
+  {% if series_total > 1 %}
+    {% for p in series_posts %}
+      {% if p.url == page.url %}
+        {% assign series_pos = forloop.index %}
+      {% endif %}
+    {% endfor %}
+    {% assign series_prev_index = series_pos | minus: 2 %}
+    <div class="series-nav text-muted small mt-4 mb-2">
+      <div class="mb-1">
+        <i class="fas fa-book-open fa-fw me-1"></i>
+        本系列《{{ page.series }}》第 {{ series_pos }}/{{ series_total }} 篇 ·
+        <a href="{{ site.baseurl }}/categories/{{ page.series | slugify | url_encode }}/">系列目录</a>
+      </div>
+      <div>
+        {% if series_pos > 1 %}
+          <a href="{{ series_posts[series_prev_index].url | relative_url }}">← 上一篇</a>
+        {% endif %}
+        {% if series_pos < series_total %}
+          <a href="{{ series_posts[series_pos].url | relative_url }}" class="ms-3">下一篇 →</a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
