@@ -26,8 +26,8 @@
 ## 3. 封面规范
 
 - 尺寸 **1200×630**，与站点 og:image（`assets/images/preview.png`）同源视觉；
-- 模板文件：`docs/influence/assets/juejin-cover-template.png`，单篇复用模板、不逐篇定制；
-- 标题在主标题区叠加：中文标题 ≤14 字、最多两行，避免把长文本烧进图片；
+- 模板：`docs/influence/assets/juejin-cover-template.png`，源文件 `docs/influence/assets/juejin-cover-template.html`（内含重截命令）；
+- **单篇产出方式**：改 HTML 中的系列名（`.label`）与文章标题（`h1`，中文 ≤14 字/行、最多两行），用无头 Chrome 按源文件头部命令重截 PNG——标题直出、风格零漂移、不依赖制图工具；
 - 图形元素为主、留白充足，缩略图状态可读。
 
 ## 4. 发布 5 步 SOP（每篇固定）
