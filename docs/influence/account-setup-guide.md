@@ -9,27 +9,17 @@
 - ✅ 掘金账号已注册、资料已完善、两个专栏已建：https://juejin.cn/user/1999384016586138
 - ✅ blog 仓库 Discussions 已开启；GSC/Bing 验证码已回传并接线（待部署后回后台点「验证」）
 - ✅ GitHub Profile 仓库已创建并粘贴 README：https://github.com/cheneyzhang93
-- ⏳ 待办：安装 giscus app 并回传 repo_id / category_id
+- ✅ giscus 已接线（repo_id / category_id 已回传，App 已核实安装到 blog 仓库）
 
-## 1. giscus 评论（回传两个值）
+## 1. giscus 评论（✅ 已完成）
 
-> 已核实：`cheneyzhang93/blog` 是**公开仓库、非 fork**——Discussions 一定可以开启；若在页面上找不到入口，多半是没在电脑浏览器上打开对的设置页（手机 App 不支持开 Discussions）。
-> 入口路径：仓库页顶部 **Settings** → 左侧 **General** → 向下滚到 **Features** 区块 → 勾选 **Discussions**（中文界面显示为「讨论」）。勾选即生效，仓库顶部随即出现 Discussions 标签页。
+> 两值已回传并写入 `_config.yml`（repo `cheneyzhang93/blog`、映射 pathname、分类 Announcements、语言 zh-CN、reactions 开启）。
+> 已通过 giscus API 核实：仓库侧提示为「Discussion not found」（= App 已安装，仅尚未有人评论）而非「giscus is not installed」。
+> **唯一剩余动作（部署后）**：打开任一文章页，确认文末评论框正常加载；第一条评论发出时 giscus 会自动创建对应 Discussion。
 
-1. 打开 https://github.com/cheneyzhang93/blog/settings ，在 Features 区块勾选 **Discussions**；
-2. 打开 https://giscus.app/zh-CN ，「仓库」一栏填 `cheneyzhang93/blog`；若提示 giscus app 未安装，按页面提示把 App 安装到该仓库（授权时选 `cheneyzhang93/blog` 即可）；
-3. 「页面 ↔️ discussion 映射关系」选 **pathname**；
-4. 「Discussion 分类」选 **Announcements**（默认分类就有；下拉里没有的话选 General 也可以）；
-5. 页面下方「启用 giscus」生成的代码里，把 **data-repo-id** 与 **data-category-id** 两个值复制回传。
+留档：如需重新生成配置，打开 https://giscus.app/zh-CN 按上述参数选择即可，生成的 `data-repo-id` / `data-category-id` 应与 `R_kgDOMjUT_A` / `DIC_kwDOMjUT_M4DFz8w` 一致。
 
-回传格式：
-
-```
-repo_id: R_kgDOxxxxxx
-category_id: DIC_kwDOxxxxxx
-```
-
-## 2. Google Search Console（回传验证码）
+## 2. Google Search Console（✅ 码已回传并接线；待部署后点「验证」）
 
 > 顺序很重要：**先把码回传给我 → 我填入配置并部署 → 你再点「验证」**。在验证码上线之前点验证会失败。
 
@@ -39,7 +29,7 @@ category_id: DIC_kwDOxxxxxx
 4. 验证方式选 **HTML 标记**，页面会显示一段 `<meta name="google-site-verification" content="xxxx" />`；
 5. 把 content="…" 引号里的那串复制回传（不要点验证，等我部署完再点）。
 
-## 3. Bing 站长（回传验证码）
+## 3. Bing 站长（✅ 码已回传并接线；待部署后点「验证」）
 
 1. 打开 https://www.bing.com/webmasters → 添加站点 → 填 `https://cheneyzhang93.github.io/blog/`；
 2. 验证方式选 **Meta 标记**（或「HTML Meta tag」），复制 content 值回传；
@@ -66,9 +56,15 @@ category_id: DIC_kwDOxxxxxx
 
 ## 完成后回传清单
 
-- [ ] giscus：repo_id / category_id
+- [x] giscus：repo_id / category_id 已回传并接线（R_kgDOMjUT_A / DIC_kwDOMjUT_M4DFz8w）
 - [x] GSC：已验证码已接线（aV92…GuM）
 - [x] Bing：msvalidate.01 已接线（5574…9724）
 - [x] GitHub Profile 仓库已创建（贴草稿）
 - [x] GoatCounter 已注册（站点码 cheney，站内已接线）
 - [x] 掘金账号、资料与两个专栏已创建（W3 起按 kit 节奏同步）
+
+**部署后一次性的收尾动作（都在你侧，共约 5 分钟）**
+
+1. 任一文章页文末确认 giscus 评论框加载（若显示未安装，回跑 §1 留档链接）；
+2. GSC / Bing 后台点「验证」；
+3. 两家后台 **Sitemaps** 提交 `https://cheneyzhang93.github.io/blog/sitemap.xml`。
