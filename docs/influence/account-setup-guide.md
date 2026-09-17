@@ -7,7 +7,9 @@
 
 - ✅ GoatCounter 已注册（站点码 `cheney`，站内接线已完成并提交）
 - ✅ 掘金账号已注册、资料已完善、两个专栏已建：https://juejin.cn/user/1999384016586138
-- ⏳ 待办：giscus 两值、GSC/Bing 验证码、GitHub Profile 仓库
+- ✅ blog 仓库 Discussions 已开启；GSC/Bing 验证码已回传并接线（待部署后回后台点「验证」）
+- ✅ GitHub Profile 仓库已创建并粘贴 README：https://github.com/cheneyzhang93
+- ⏳ 待办：安装 giscus app 并回传 repo_id / category_id
 
 ## 1. giscus 评论（回传两个值）
 
@@ -65,8 +67,8 @@ category_id: DIC_kwDOxxxxxx
 ## 完成后回传清单
 
 - [ ] giscus：repo_id / category_id
-- [ ] GSC：google-site-verification 的 content 值
-- [ ] Bing：msvalidate.01 的 content 值
-- [ ] GitHub Profile 仓库已创建（贴草稿）
+- [x] GSC：已验证码已接线（aV92…GuM）
+- [x] Bing：msvalidate.01 已接线（5574…9724）
+- [x] GitHub Profile 仓库已创建（贴草稿）
 - [x] GoatCounter 已注册（站点码 cheney，站内已接线）
 - [x] 掘金账号、资料与两个专栏已创建（W3 起按 kit 节奏同步）
