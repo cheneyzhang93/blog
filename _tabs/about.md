@@ -24,12 +24,21 @@ seo:
 
 ## 从这里读起
 
+**稳定性治理（五部曲，按序读）**：
+
+1. [《从零建立测试体系：分层、基座、断言与回归纪律》]({{ '/posts/test-system-from-scratch/' | relative_url }})——223 个用例的从零建设与三笔学费；
+2. [《API 契约治理：OpenAPI 3 落地、契约守护与生效边界》]({{ '/posts/api-contract-governance/' | relative_url }})——接口变更「改了就拦得住」；
+3. [《日志治理：统一异常出口、结构化日志与字段契约》]({{ '/posts/structured-logging/' | relative_url }})——可观测三件套之一；
+4. [《链路追踪治理：W3C 标准落地、上下文传播与 Agent 取舍》]({{ '/posts/distributed-tracing/' | relative_url }})——可观测三件套之二；
+5. [《告警治理：事件引擎、通道自建与慢 SQL 感知》]({{ '/posts/alerting-engine/' | relative_url }})——可观测三件套之三。
+
+**后端架构（工程任务复盘）**：
+
 - [《收件箱模式：三方推送消息的可靠消费设计与实践》]({{ '/posts/reliable-message-consume/' | relative_url }})——落库即应答与四态状态机；
-- [《从零建立测试体系：分层、基座、断言与回归纪律》]({{ '/posts/test-system-from-scratch/' | relative_url }})——223 个用例的从零建设与三笔学费；
-- [《日志治理：统一异常出口、结构化日志与字段契约》]({{ '/posts/structured-logging/' | relative_url }})——可观测三件套的第一篇（另有[《链路追踪治理》]({{ '/posts/distributed-tracing/' | relative_url }})与[《告警治理》]({{ '/posts/alerting-engine/' | relative_url }})）；
-- [《API 契约治理：OpenAPI 3 落地、契约守护与生效边界》]({{ '/posts/api-contract-governance/' | relative_url }})——接口变更「改了就拦得住」。
+- [《批量数据修复：文件账本驱动的可回滚设计》]({{ '/posts/batch-data-fix-file-ledger/' | relative_url }})——文件账本、幂等与回滚。
 
 ## 联系与订阅
 
+- **GitHub**：[cheneyzhang93](https://github.com/cheneyzhang93)——代码与实践的补充；
 - **邮箱**：[cheney@example.com](mailto:cheney@example.com)——交流、指正，欢迎来[友情链接]({{ '/friends/' | relative_url }})页交换友链；
 - **RSS**：订阅 [feed.xml]({{ '/feed.xml' | relative_url }})，更新不遗漏。
