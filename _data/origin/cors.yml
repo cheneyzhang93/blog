@@ -1,47 +1,56 @@
-# Resource Hints（仅保留 jsdelivr；Google Fonts 已改自托管 Inter，不再预连接）
+# 站内自托管资源清单
+#
+# 背景（2026-09-25）：此前所有前端库都走 cdn.jsdelivr.net，而该域名在国内网络普遍不可达。
+# 后果是 mermaid 拿不到文件 → 流程图退化成源码文本，同时目录/搜索/图标/复制按钮一并失效。
+# 现在一律改为站内路径，正文页面不再请求任何国外 CDN。
+#
+# 文件位置：
+#   assets/lib/       chirpy 官方静态资源子模块（cotes2020/chirpy-static-assets，CI 随 submodules: true 拉取），
+#                     版本与主题配套：mermaid 10.9.0、fontawesome-free 6.5.2、tocbot 4.27.20、dayjs 1.11.11 等
+#   assets/lib-extra/ 子模块缺失、由本站补齐的文件（子模块目录里自行新增的文件不会被 git 跟踪，务必放这里）
+#
+# 注意：assets.self_host.enabled 必须保持关闭——开启后会改读 _data/origin/basic.yml，下面 webfonts 槽位失效
 
-resource_hints:
-  - url: https://cdn.jsdelivr.net
-    links:
-      - rel: preconnect
-      - rel: dns-prefetch
+# 已无外部资源，无需 preconnect / dns-prefetch
+resource_hints: []
 
 # Web Fonts：指向站内身份层样式（Inter @font-face + 全站视觉覆盖），替代 Google Fonts
-# 注意：身份层挂接在此槽位——assets.self_host.enabled 必须保持关闭（开启后会改读 basic.yml，本覆盖将失效）
 webfonts: /assets/css/identity.css
 
 # Libraries
 
 toc:
-  css: https://cdn.jsdelivr.net/npm/tocbot@4.27.20/dist/tocbot.min.css
-  js: https://cdn.jsdelivr.net/npm/tocbot@4.27.20/dist/tocbot.min.js
+  css: /assets/lib/tocbot/tocbot.min.css
+  js: /assets/lib/tocbot/tocbot.min.js
 
 fontawesome:
-  css: https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css
+  css: /assets/lib/fontawesome-free/css/all.min.css
 
 search:
-  js: https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js
+  js: /assets/lib/simple-jekyll-search/simple-jekyll-search.min.js
 
 mermaid:
-  js: https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js
+  js: /assets/lib/mermaid/mermaid.min.js
 
 dayjs:
   js:
-    common: https://cdn.jsdelivr.net/npm/dayjs@1.11.11/dayjs.min.js
-    locale: https://cdn.jsdelivr.net/npm/dayjs@1.11.11/locale/:LOCALE.min.js
-    relativeTime: https://cdn.jsdelivr.net/npm/dayjs@1.11.11/plugin/relativeTime.min.js
-    localizedFormat: https://cdn.jsdelivr.net/npm/dayjs@1.11.11/plugin/localizedFormat.min.js
+    common: /assets/lib/dayjs/dayjs.min.js
+    locale: /assets/lib-extra/dayjs/locale/:LOCALE.min.js
+    relativeTime: /assets/lib/dayjs/plugin/relativeTime.min.js
+    localizedFormat: /assets/lib/dayjs/plugin/localizedFormat.min.js
 
 glightbox:
-  css: https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css
-  js: https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js
+  css: /assets/lib/glightbox/glightbox.min.css
+  js: /assets/lib/glightbox/glightbox.min.js
 
 lazy-polyfill:
-  css: https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css
-  js: https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js
+  css: /assets/lib/loading-attribute-polyfill/loading-attribute-polyfill.min.css
+  js: /assets/lib/loading-attribute-polyfill/loading-attribute-polyfill.umd.min.js
 
 clipboard:
-  js: https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js
+  js: /assets/lib/clipboard/clipboard.min.js
 
+# 目前没有文章使用数学公式（front matter `math: true`）。子模块自带完整组件树，需要时可直接启用；
+# 届时主题模板仍会额外请求 cdnjs 的 ES6 polyfill（js-selector.html 内硬编码，现代浏览器不需要它）
 mathjax:
-  js: https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js
+  js: /assets/lib/mathjax/tex-chtml.js
