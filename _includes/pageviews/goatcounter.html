@@ -1,0 +1,41 @@
+<!-- Display GoatCounter pageviews（本站覆盖版）：load 之后再取数，5 秒超时兜底，
+     避免外部请求挂起时读数一直转圈（拿不到就显示 —）。 -->
+<script>
+  window.addEventListener(
+    'load',
+    function () {
+      var pv = document.getElementById('pageviews');
+      if (pv === null) {
+        return;
+      }
+
+      var uri = location.pathname.replace(/\/$/, '');
+      var url = 'https://{{ site.analytics.goatcounter.id }}.goatcounter.com/counter/' + encodeURIComponent(uri) + '.json';
+      var done = false;
+
+      var finish = function (text) {
+        if (!done) {
+          done = true;
+          pv.innerText = text;
+        }
+      };
+
+      var timer = setTimeout(function () {
+        finish('—');
+      }, 5000);
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          clearTimeout(timer);
+          const count = String(data.count).replace(/\s/g, '');
+          finish(new Intl.NumberFormat().format(count));
+        })
+        .catch(() => {
+          clearTimeout(timer);
+          finish('—');
+        });
+    },
+    { once: true }
+  );
+</script>

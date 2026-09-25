@@ -1,0 +1,17 @@
+<!-- GoatCounter（本站覆盖版）：脚本改为页面 load 之后再拉取。
+     国内网络下 gc.zgo.at 常连不上并长时间挂起，挂起的脚本会压住 load，进度条走不完。 -->
+<script>
+  window.addEventListener(
+    'load',
+    function () {
+      setTimeout(function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://gc.zgo.at/count.js';
+        s.setAttribute('data-goatcounter', 'https://{{ site.analytics.goatcounter.id }}.goatcounter.com/count');
+        document.body.appendChild(s);
+      }, 0);
+    },
+    { once: true }
+  );
+</script>

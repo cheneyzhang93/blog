@@ -1,0 +1,102 @@
+<!-- https://giscus.app/
+     本站覆盖版：评论脚本改为「滚到评论区附近 + 页面 load 之后」才请求 giscus.app。
+     国内网络下 giscus.app 常长时间挂起，挂住的脚本会一直压着页面的 load，进度条走不完。 -->
+<script type="text/javascript">
+  (function () {
+    const origin = 'https://giscus.app';
+    const lightTheme = 'light';
+    const darkTheme = 'dark_dimmed';
+
+    let initTheme = lightTheme;
+    const html = document.documentElement;
+
+    if (
+      (html.hasAttribute('data-mode') &&
+        html.getAttribute('data-mode') === 'dark') ||
+      (!html.hasAttribute('data-mode') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      initTheme = darkTheme;
+    }
+
+    let giscusAttributes = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '{{ site.comments.giscus.repo}}',
+      'data-repo-id': '{{ site.comments.giscus.repo_id }}',
+      'data-category': '{{ site.comments.giscus.category }}',
+      'data-category-id': '{{ site.comments.giscus.category_id }}',
+      'data-mapping': '{{ site.comments.giscus.mapping | default: 'pathname' }}',
+      'data-strict' : '{{ site.comments.giscus.strict | default: '0' }}',
+      'data-reactions-enabled': '{{ site.comments.giscus.reactions_enabled | default: '1' }}',
+      'data-emit-metadata': '0',
+      'data-theme': initTheme,
+      'data-input-position': '{{ site.comments.giscus.input_position | default: 'bottom' }}',
+      'data-lang': '{{ site.comments.giscus.lang | default: lang }}',
+      'data-loading': 'lazy',
+      crossorigin: 'anonymous',
+      async: ''
+    };
+
+    function mountGiscus() {
+      if (window.__giscusMounted) {
+        return;
+      }
+      window.__giscusMounted = true;
+
+      let giscusScript = document.createElement('script');
+      Object.entries(giscusAttributes).forEach(([key, value]) =>
+        giscusScript.setAttribute(key, value)
+      );
+      document.getElementById('tail-wrapper').appendChild(giscusScript);
+    }
+
+    /* 等到页面 load 之后再挂载，确保外部请求不参与页面加载；站内 compress 布局会压掉换行，禁止 // 行注释 */
+    function mountAfterLoad() {
+      if (document.readyState === 'complete') {
+        mountGiscus();
+      } else {
+        window.addEventListener('load', mountGiscus, { once: true });
+      }
+    }
+
+    const tail = document.getElementById('tail-wrapper');
+
+    if (tail && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            io.disconnect();
+            mountAfterLoad();
+          }
+        },
+        { rootMargin: '1200px 0px' }
+      );
+      io.observe(tail);
+    } else {
+      mountAfterLoad();
+    }
+
+    addEventListener('message', (event) => {
+      if (
+        event.source === window &&
+        event.data &&
+        event.data.direction === ModeToggle.ID
+      ) {
+        {%- comment -%} global theme mode changed {%- endcomment -%}
+        const mode = event.data.message;
+        const theme = mode === ModeToggle.DARK_MODE ? darkTheme : lightTheme;
+
+        const message = {
+          setConfig: {
+            theme: theme
+          }
+        };
+        const frame = document.getElementsByClassName('giscus-frame')[0];
+        if (!frame) {
+          return;
+        }
+        frame.contentWindow.postMessage({ giscus: message }, origin);
+      }
+    });
+  })();
+</script>

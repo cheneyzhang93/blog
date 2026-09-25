@@ -1,0 +1,117 @@
+<!-- mermaid-js loader（本站覆盖主题版本，三处加固）：
+     1) 老内核补丁：mermaid 10.9 用到 structuredClone / Object.hasOwn，iOS<15.4、Chromium<98 缺失时渲染会静默失败
+     2) startOnLoad 关掉改为显式 run()：渲染不再依赖 DOMContentLoaded，外部请求挂起也拖不住它
+     3) 渲染失败时在图位打出可见提示，手机端一张截图就能定位原因 -->
+<script type="text/javascript">
+  function updateMermaid(event) {
+    if (event.source === window && event.data && event.data.direction === ModeToggle.ID) {
+      const mode = event.data.message;
+
+      if (typeof mermaid === 'undefined') {
+        return;
+      }
+
+      let expectedTheme = mode === ModeToggle.DARK_MODE ? 'dark' : 'default';
+      let config = { theme: expectedTheme };
+
+      {%- comment -%}
+        Re-render the SVG › <https://github.com/mermaid-js/mermaid/issues/311#issuecomment-332557344>
+      {%- endcomment -%}
+      const mermaidList = document.getElementsByClassName('mermaid');
+
+      [...mermaidList].forEach((elem) => {
+        const svgCode = elem.previousSibling.children.item(0).innerHTML;
+        elem.innerHTML = svgCode;
+        elem.removeAttribute('data-processed');
+      });
+
+      try {
+        mermaid.initialize(config);
+        mermaid.init(undefined, '.mermaid');
+      } catch (e) {
+        showMermaidFallback(e);
+      }
+    }
+  }
+
+  function showMermaidFallback(error) {
+    let reason;
+
+    if (typeof mermaid === 'undefined') {
+      reason = '流程图脚本没有加载成功（可能被网络拦截）';
+    } else {
+      reason = '渲染出错：' + (error && error.message ? String(error.message).slice(0, 80) : '未知错误');
+    }
+
+    [...document.getElementsByClassName('mermaid')].forEach((elem) => {
+      if (elem.dataset.fallbackShown === '1') {
+        return;
+      }
+      elem.dataset.fallbackShown = '1';
+
+      const tip = document.createElement('p');
+      tip.textContent = '图表未能显示：' + reason + '。请把这条提示截图发给作者。';
+      tip.setAttribute(
+        'style',
+        'margin:.75rem 0;padding:.5rem .75rem;border-left:3px solid #d9534f;background:rgba(217,83,79,.08);font-size:.875rem;text-align:left;'
+      );
+      elem.parentNode.insertBefore(tip, elem);
+    });
+  }
+
+  (function () {
+    /* 老内核兼容补丁：只在内核本身缺失该 API 时生效（注意：本站 compress 布局会把内联脚本压成一行，禁止用 // 行注释） */
+    if (typeof window.structuredClone !== 'function') {
+      window.structuredClone = function (value) {
+        return value === undefined ? value : JSON.parse(JSON.stringify(value));
+      };
+    }
+    if (typeof Object.hasOwn !== 'function') {
+      Object.hasOwn = function (obj, key) {
+        return Object.prototype.hasOwnProperty.call(obj, key);
+      };
+    }
+
+    let initTheme = 'default';
+    const html = document.documentElement;
+
+    if (
+      (html.hasAttribute('data-mode') && html.getAttribute('data-mode') === 'dark') ||
+      (!html.hasAttribute('data-mode') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      initTheme = 'dark';
+    }
+
+    let mermaidConf = {
+      theme: initTheme,
+      startOnLoad: false
+    };
+
+    {%- comment -%} Create mermaid tag {%- endcomment -%}
+    const basicList = document.getElementsByClassName('language-mermaid');
+    [...basicList].forEach((elem) => {
+      const svgCode = elem.textContent;
+      const backup = elem.parentElement;
+      backup.classList.add('d-none');
+      {%- comment -%} create mermaid node {%- endcomment -%}
+      let mermaid = document.createElement('pre');
+      mermaid.classList.add('mermaid');
+      const text = document.createTextNode(svgCode);
+      mermaid.appendChild(text);
+      backup.after(mermaid);
+    });
+
+    if (typeof mermaid === 'undefined') {
+      showMermaidFallback(null);
+      return;
+    }
+
+    try {
+      mermaid.initialize(mermaidConf);
+      mermaid.run({ nodes: [...document.getElementsByClassName('mermaid')] }).catch((e) => showMermaidFallback(e));
+      window.addEventListener('message', updateMermaid);
+    } catch (e) {
+      showMermaidFallback(e);
+    }
+  })();
+</script>
